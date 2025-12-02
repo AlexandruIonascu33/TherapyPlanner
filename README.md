@@ -1,7 +1,8 @@
-# Work Engagement Scale – End-of-Semester Lab Test (Introduction to Programming)
 
-This repository contains the program structure (and associated tests) required for the end-of-semester lab assignment.  
-Use **`app.py`** for the application code and **`tests.py`** for the test suite. You may add additional files if necessary.
+# Therapy Planner – End-of-Semester Lab Test (Introduction to Programming)
+
+This repository contains the required structure for the end-of-semester lab assignment.  
+Use **`app.py`** for the program logic and **`tests.py`** for unit tests. Additional files may be added if necessary.
 
 ---
 
@@ -9,141 +10,133 @@ Use **`app.py`** for the application code and **`tests.py`** for the test suite.
 
 Create a Python program that:
 
-- Administers a quiz using the **Utrecht Work Engagement Scale – Short Version (UWES-9)**.
-- Computes **mean scores** for each dimension:
-  - **Vigor**
-  - **Dedication**
-  - **Absorption**
-- Interprets engagement levels as **Low**, **Moderate**, or **High**, based on the computed means.
-- Handles invalid user inputs gracefully using exceptions.
-- Includes at least one **unit test** for a calculation or interpretation function (e.g., score interpretation).
+- Asks users questions about planning **weekly therapy sessions** for **three clients**.
+- Computes **weekly totals** for each therapy type by aggregating all client responses.
+- Interprets each total as **Low**, **Moderate**, or **High load**.
+- Handles invalid inputs gracefully using exception handling.
+- Includes a **unit test** for a calculation or interpretation function.
+
+The objective is to calculate **one weekly total per therapy type**, combining all answers across all three clients.
 
 ---
 
 ## 🧩 Functional Requirements
 
 ### Quiz Structure
-- The quiz consists of **9 questions**, covering:
-  - **Vigor**
-  - **Dedication**
-  - **Absorption**
-- Each question uses a **0–6 Likert scale**:
-  - `0 = Never`
-  - `1 = Almost never`
-  - `2 = Rarely`
-  - `3 = Sometimes`
-  - `4 = Often`
-  - `5 = Very often`
-  - `6 = Always`
+- The quiz contains **15 questions**.
+- Each question corresponds to one of the following therapy types:
+  - **IndividualTherapy**
+  - **GroupTherapy**
+  - **FamilyTherapy**
+  - **CoupleTherapy**
+  - **OnlineTherapy**
+- Each question asks how many weekly sessions (**0–7**) the user has with:
+  - the **first client**
+  - the **second client**
+  - the **third client**
 
 ---
 
-### Scoring
-- Each response contributes to one of the three UWES dimensions.
-- For each dimension:
-  - Compute the **mean score** of its associated items.
-- Compute a **global engagement score** as the mean of all three dimension means.
+## 🛠️ Scoring
+
+- Each response contributes to the total for one therapy type.
+- Weekly totals are computed by **summing all responses** that belong to the same therapy type, **regardless of which client the question refers to**.
+
+**Example:**  
+All questions labeled `"IndividualTherapy"` are added together, even if they refer to different clients.
 
 ---
 
-### Interpretation
-Interpretation depends on the **mean score**:
+## 📊 Interpretation
 
-| Mean Score               | Interpretation |
-|--------------------------|----------------|
-| **mean > 4**                  | High           |
-| **2 ≤ mean ≤ 4**         | Moderate       |
-| **mean < 2**                  | Low            |
+Interpretation is based on the weekly total:
 
-The interpretation must be implemented as a **pure function**, which will be **unit tested**.
+| Weekly Total | Interpretation |
+|--------------|----------------|
+| **> 9**      | High load      |
+| **5–9**      | Moderate load  |
+| **< 5**      | Low load       |
+
+This interpretation must be implemented using a **pure function**, which will be unit tested.
 
 ---
 
-### Output Requirements
-The program must:
+## 📤 Output Requirements
 
-- Display the **mean score** for each dimension.
-- Show the **interpretation** (High / Moderate / Low) for each dimension.
-- Display the **global engagement mean score**.
+Your program must:
+
+- Display the **weekly total sessions** for each therapy type.
+- Provide a **descriptive label** (High, Moderate, Low) for each type.
 
 ---
 
 ## ✔️ Input Validation
 
-Handle invalid inputs by:
+If the user provides invalid input:
 
-- Re-prompting the user if the input is **non-numeric**.
-- Showing an error message and retrying if the input is **outside 0–6**.
-- Using `try/except` to avoid program crashes.
+- If the input is **non-numeric**, ask again.
+- If the value is outside the valid range **0–7**, show an error and re-prompt.
+- Use `try/except` blocks to prevent program crashes.
 
 ---
 
 ## 🗂️ Data Structure
 
-You may store questions in a **list of dictionaries**, or use another suitable collection type.
+You may use a **list of dictionaries** or another suitable data structure.
 
-Each dictionary should contain:
+Each dictionary includes:
 
 - `text`: The question text  
-- `dimension`: The UWES dimension it belongs to  
+- `therapy`: The therapy type  
 
 **Example:**
 
 ```python
-questions = [
-    {"text": "At my work, I feel bursting with energy.", "dimension": "Vigor"},
-    {"text": "At my job, I feel strong and vigorous.", "dimension": "Vigor"},
-    {"text": "I am enthusiastic about my job.", "dimension": "Dedication"},
-    {"text": "My job inspires me.", "dimension": "Dedication"},
-    {"text": "When I get up in the morning, I feel like going to work.", "dimension": "Vigor"},
-    {"text": "I feel happy when I am working intensely.", "dimension": "Absorption"},
-    {"text": "I am proud of the work that I do.", "dimension": "Dedication"},
-    {"text": "I am immersed in my job.", "dimension": "Absorption"},
-    {"text": "I get carried away when I am working.", "dimension": "Absorption"}
+items = [
+    {"text": "How many Individual Therapy sessions per week do you have with the first client?", "therapy": "IndividualTherapy"},
+    {"text": "How many Group Therapy sessions per week do you have with the first client?", "therapy": "GroupTherapy"},
+    {"text": "How many Family Therapy sessions per week do you have with the first client?", "therapy": "FamilyTherapy"}
 ]
 ````
 
 ---
 
-## 🛠️ Non-Functional Requirements
+## 🧾 Non-Functional Requirements
 
 Your code must:
 
-* Be **modular** (use functions appropriately).
+* Be **modular**.
 * Be **testable**.
-* Follow **good naming and coding practices**.
-* Handle errors, including invalid user input.
+* Follow **clean writing and naming conventions**.
+* Handle errors robustly, including invalid user input.
 
 ---
 
 ## 📝 Grading Criteria (Total: 9 points)
 
-To pass, you must earn **at least 4 points**.
+To pass, you must score **at least 4 points**.
 
-| Criterion                                                                            | Points |
-| ------------------------------------------------------------------------------------ | ------ |
-| Program runs without errors/warnings                                                 | 1      |
-| Program output is correct                                                            | 1      |
-| At least one meaningful unit test                                                    | 1      |
-| Correctly implements a requested live modification within 5 minutes                  | 3      |
-| Answers questions about their own code (max 1 point per answer, 1 minute per answer) | 3      |
+| Criterion                                                                        | Points |
+| -------------------------------------------------------------------------------- | ------ |
+| Program runs without errors/warnings                                             | 1      |
+| Program produces the expected output                                             | 1      |
+| Program includes at least one meaningful unit test                               | 1      |
+| Student performs a live modification in ≤5 minutes                               | 3      |
+| Student answers questions about their own code (up to 3 questions, 1 point each) | 3      |
 
-Evaluation may occur during the **last lab meeting** or during **exam sessions**.
+Evaluation may take place during the **last lab session** or any **exam session**.
 
 ---
 
-## 🧪 Example Input (User Responses)
+## 🧪 Example Input
 
 ```
-At my work, I feel bursting with energy. 3
-At my job, I feel strong and vigorous. 4
-I am enthusiastic about my job. 5
-My job inspires me. 4
-When I get up in the morning, I feel like going to work. 2
-I feel happy when I am working intensely. 5
-I am proud of the work that I do. 5
-I am immersed in my job. 3
-I get carried away when I am working. 4
+How many Individual Therapy sessions per week do you have with the first client? 2
+How many Group Therapy sessions per week do you have with the first client? 1
+How many Individual Therapy sessions per week do you have with the second client? 3
+How many Online Therapy sessions per week do you have with the third client? 2
+How many Family Therapy sessions per week do you have with the third client? 0
+...
 ```
 
 ---
@@ -151,10 +144,13 @@ I get carried away when I am working. 4
 ## 🧾 Example Output
 
 ```
-Vigor: mean = 3.00 → Moderate
-Dedication: mean = 4.67 → High
-Absorption: mean = 4.00 → Moderate
-Global Engagement: mean = 3.89 → Moderate
+IndividualTherapy: 6 sessions/week → Moderate
+GroupTherapy: 1 sessions/week → Low
+FamilyTherapy: 0 sessions/week → Low
+CoupleTherapy: 10 sessions/week → High
+OnlineTherapy: 2 sessions/week → Low
 ```
+
+---
 
 
